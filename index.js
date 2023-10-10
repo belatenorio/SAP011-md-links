@@ -1,16 +1,25 @@
 const fs = require('fs');
 const chalk = require('chalk');
 
-// function lerArquivo(caminhoDoArquivo){
-//    return new Promise(function(resolve, reject){
-//     fs.readFile(caminhoDoArquivo, 'utf-8', (err, data) =>{
-//         if(err) reject err;
-//         resolve(data);
-//     });
-//     }) 
-// }
+//criar uma função que verifica se a extensão do arquivo para leitura é md
 
-console.log(chalk.red('Hello world!'));
+function lerArquivo(caminhoDoArquivo) {
+  return new Promise(function (resolve, reject) {
+    fs.readFile(caminhoDoArquivo, 'utf-8', (err, data) => {
+      if (err) {
+        reject(err);
+      }
+      else {
+        resolve(data);
+      }
+    });
+  });
+};
+
+//criar função mdLinks para extrair os links do arquivo md
+
+module.exports = { lerArquivo }
+
 //console.log(chalk.blue(nome da constante));
 //console.log(chalk.bgRed("A soma é:"), chalk.blue(resultado));
 
