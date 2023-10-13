@@ -8,14 +8,14 @@ async function arquivoNoTerminal() {
   const caminhoArquivo = process.argv[2];
   try{
     const conteudoDoArquivo = await lerArquivo(caminhoArquivo);
-    console.log(chalk.bgBlue(conteudoDoArquivo));
+    console.log(chalk.blue(conteudoDoArquivo));
   } catch (error) {
-    console.error(chalk.red(`Ocorreu um erro ao ler o arquivo: ${error.message}`));
+    console.error(chalk.red(`Ocorreu um erro ao ler o arquivo: ${error}`));
   }
 };
 
 arquivoNoTerminal()
 
-const inputs = process.argv
-console.log(inputs);
-console.log('Oi, CLI!');
+// const inputs = process.argv
+// console.log(inputs);
+// console.log('Oi, CLI!');
