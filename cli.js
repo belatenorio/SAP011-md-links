@@ -16,6 +16,9 @@ async function arquivoNoTerminal() {
 
 arquivoNoTerminal()
 
+//substituir o await por .them
+//lerArquivo(caminhoArquivo).then(console.log aqui dentro!)
+
 // const inputs = process.argv
 // console.log(inputs);
 // console.log('Oi, CLI!');

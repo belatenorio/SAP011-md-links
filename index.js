@@ -5,13 +5,13 @@ const { text } = require('stream/consumers');
 
 // essa função obtém informações sobre o arquivo, e não sua extensão!
 fs.stat('README.md', (error, stats) => {
-  if(error){
+  if (error) {
     console.log(error);
-  }else{
+  } else {
     console.log('Stats object for: README.md');
     console.log(stats);
 
-    console.log('Path is file:', stats.isFile()); 
+    console.log('Path is file:', stats.isFile());
     console.log('Path is directory:', stats.isDirectory());
   }
 });
@@ -25,11 +25,24 @@ function lerArquivo(caminhoDoArquivo) {
         }
         else {
           // resolve(data);
-          const linksCombinaRegex = [...data.matchAll(/\[([^[\]]*?)\]\((https?:\/\/[^\s?#.].[^\s]*)\)/gm)];
+          //verifica os links dentro do arquivo markdow que combinam com o regex
+          const linksCombinaComRegex = [...data.matchAll(/\[([^[\]]*?)\]\((https?:\/\/[^\s?#.].[^\s]*)\)/gm)];
           const links = [];
-          for (i = 0; i < linksCombinaRegex.length; i++) {
-            links.push(linksCombinaRegex[i]);
+          for (i = 0; i < linksCombinaComRegex.length; i++) {
+
+            const correspondencia = linksCombinaComRegex[i];
+            const texto = correspondencia[1];
+            const url = correspondencia[2];
+
+            //armazena os dados separados dentro de um objeto
+            const linkSeparado = { texto, url };
+            links.push(linkSeparado);
           }
+          links.forEach(link => {
+            console.log(chalk.yellow("Texto:", link.texto));
+            console.log(chalk.blue("URL:", link.url));
+          });
+
           resolve(links);
         }
       });
