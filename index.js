@@ -24,23 +24,19 @@ function lerArquivo(caminhoDoArquivo) {
           reject(err);
         }
         else {
-          // resolve(data);
           //verifica os links dentro do arquivo markdow que combinam com o regex
           const linksCombinaComRegex = [...data.matchAll(/\[([^[\]]*?)\]\((https?:\/\/[^\s?#.].[^\s]*)\)/gm)];
           const links = [];
           for (i = 0; i < linksCombinaComRegex.length; i++) {
-
-            const correspondencia = linksCombinaComRegex[i];
-            const texto = correspondencia[1];
-            const url = correspondencia[2];
+            const [, texto, href] = linksCombinaComRegex[i]; //utilização de desestruturação
 
             //armazena os dados separados dentro de um objeto
-            const linkSeparado = { texto, url };
+            const linkSeparado = { texto, href };
             links.push(linkSeparado);
           }
           links.forEach(link => {
             console.log(chalk.yellow("Texto:", link.texto));
-            console.log(chalk.blue("URL:", link.url));
+            console.log(chalk.blue("URL:", link.href));
           });
 
           resolve(links);
@@ -52,6 +48,8 @@ function lerArquivo(caminhoDoArquivo) {
   });
 };
 
+module.exports = { lerArquivo }
+
 //criar rejex
 //ver no data as coisas que dão matchAll com o meu rejex
 //fazer loop para pegar cada link 
@@ -60,7 +58,9 @@ function lerArquivo(caminhoDoArquivo) {
 //colocar o objeto dentro de um array vazio(result.push())
 //dar um resolve desse array
 
-module.exports = { lerArquivo }
+//correspondencia[0]: Contém a correspondência completa, ou seja, todo o texto no formato [texto](URL)
+//correspondencia[1]: Contém o que está entre os primeiros colchetes [...], que é o texto do link
+//correspondencia[2]: Contém o que está entre os parênteses (...), que é a URL do link
 
 //construir uma função mdLinks que vai ser uma promise.
 //construir um alerta para diretório que não tem nenhum arquivo com extensão .md
