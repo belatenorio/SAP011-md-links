@@ -2,6 +2,7 @@
 // A CLI serve para modificar o terminal
 //manter tudo que é console.log dentro da CLI
 const { lerArquivo } = require('./index.js');
+const { validacaoLinks } = require('./validate.js');
 const chalk = require('chalk');
 
 async function arquivoNoTerminal() {
