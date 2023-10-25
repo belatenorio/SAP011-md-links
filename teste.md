@@ -1,0 +1,6 @@
+[Markdown](https://pt.widown)
+[Markdown](https://pt.widown)
+[Node.js](https://nodejs.org/palomitalinda)
+[Node.js](https://nodejs.org/pt-br/)
+[Arranjos](https://curriculum.laboratoria.la/pt/topics/javascript/04-arrays)
+[Array.prototype.reduce() - MDN](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)

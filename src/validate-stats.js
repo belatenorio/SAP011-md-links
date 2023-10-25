@@ -1,22 +1,8 @@
 const fs = require('fs');
-const chalk = require('chalk');
 const path = require('path');
-const { text } = require('stream/consumers');
+const chalk = require('chalk');
 
-// essa função obtém informações sobre o arquivo, e não sua extensão!
-fs.stat('README.md', (error, stats) => {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log('Stats object for: README.md');
-    console.log(stats);
-
-    console.log('Path is file:', stats.isFile());
-    console.log('Path is directory:', stats.isDirectory());
-  }
-});
-
-function lerArquivo(caminhoDoArquivo) {
+function extrairLinks(caminhoDoArquivo) {
   return new Promise(function (resolve, reject) {
     if (path.extname(caminhoDoArquivo) === '.md') {
       fs.readFile(caminhoDoArquivo, 'utf-8', (err, data) => {
@@ -34,11 +20,6 @@ function lerArquivo(caminhoDoArquivo) {
             const linkSeparado = { texto, href };
             links.push(linkSeparado);
           }
-          links.forEach(link => {
-            console.log(chalk.yellow("Texto:", link.texto));
-            console.log(chalk.blue("URL:", link.href));
-          });
-
           resolve(links);
         }
       });
@@ -48,11 +29,50 @@ function lerArquivo(caminhoDoArquivo) {
   });
 };
 
-module.exports = { lerArquivo }
+function validarLinks(links) {
+  return new Promise(function (resolve, reject) {
+const linksValidados = links.map(link => {
+  return fetch(link.href)
+    .then(response => {
+      link.status = response.status;
+      if (link.status >= 200 || link.status <= 404) {
+        link.ok = 'ok';
+      }else{
+        link.ok = 'fail';
+      }
+      return link;
+    })
+    .catch(err => {
+      reject(err)
+      link.ok = 'fail';
+      console.log(chalk.bgRedBright('O link está com erro'));
+      return link;
+    });
+});
+resolve(Promise.all(linksValidados));
+  });
+};
+
+function estatisticas(links) {
+  const contarLinks = links.length
+  const linksUnicos = new Set(links.map((link) => link.href)).size;
+
+  let linksQuebrados = 0;
+  links.forEach((link) => {
+    if (link.status !== 200) {
+      linksQuebrados++;
+    }
+  });
+  console.log(chalk.green('Total: ') + chalk.green(contarLinks));
+  console.log(chalk.magenta('Unique: ') + chalk.magenta(linksUnicos));
+  return { contarLinks, linksUnicos, linksQuebrados };
+};
+
+module.exports = { extrairLinks, validarLinks, estatisticas }
 
 //criar rejex
 //ver no data as coisas que dão matchAll com o meu rejex
-//fazer loop para pegar cada link 
+//fazer loop para pegar cada link
 //extrair o texto e o href
 //construir objeto com texto e href
 //colocar o objeto dentro de um array vazio(result.push())
@@ -62,5 +82,5 @@ module.exports = { lerArquivo }
 //correspondencia[1]: Contém o que está entre os primeiros colchetes [...], que é o texto do link
 //correspondencia[2]: Contém o que está entre os parênteses (...), que é a URL do link
 
-//construir uma função mdLinks que vai ser uma promise.
-//construir um alerta para diretório que não tem nenhum arquivo com extensão .md
+//Total: indica o número total de links encontrado dentro do arquivo
+//Unique: indica o número de links únicos encontrados no arquivo. Mostrando que não há links duplicados
