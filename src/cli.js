@@ -1,30 +1,64 @@
 #!/usr/bin/env node
-const { extrairLinks, validarLinks, estatisticas } = require('./validate-stats.js');
+const { mdLinks, validarLinks, estatisticas } = require('./md-links.js');
 const chalk = require('chalk');
 
-function arquivoNoTerminal() {
-  const caminhoArquivo = process.argv[2];
-  extrairLinks(caminhoArquivo).then((links) => {
-    links.forEach(link => {
-      console.log(chalk.yellow("Texto:", link.texto));
-      console.log(chalk.blue("URL:", link.href));
-    });
-    validarLinks(links).then((linksValidados) => {
-      linksValidados.forEach(link => {
-        console.log(chalk.bold('O status do link é:') + chalk.green(link.status));
-      })
-      console.log(estatisticas(linksValidados));
-    })
-  }).catch((error) => {
-    console.error(chalk.red(`Ocorreu um erro ao ler o arquivo: ${error}`));
-  })
+const comando = {
+  mdLinks: process.argv[0],
+  'validate': process.argv.includes('--validate'),
+  'stats': process.argv.includes('--stats')
+};
+
+function print(caminhoArquivo, link) {
+  console.log(chalk.white(caminhoArquivo, ' ') + chalk.yellow(link.texto) + chalk.blue(' ', link.href));
 }
-arquivoNoTerminal();
 
+function printValidate(caminhoArquivo, link) {
+  if (link.status === 200) {
+    console.log(chalk.white(caminhoArquivo, ' ') + chalk.yellow(link.texto) + chalk.blue(' ', link.href) + chalk.magenta(' ', link.status) + chalk.green(' OK'));
+  } 
+  else {
+    console.log(chalk.white(caminhoArquivo, ' ') + chalk.yellow(link.texto) + chalk.blue(' ', link.href) + chalk.magenta(' ', link.status) + chalk.bold.red(' FAIL'));
+  }
+}
 
-//substituir o await por .them
-//lerArquivo(caminhoArquivo).then(console.log aqui dentro!)
+function printStats(linksValidados) {
+  const resultadoEstatisticas = estatisticas(linksValidados);
+  console.log(chalk.green('Total: ') + chalk.green(resultadoEstatisticas.contarLinks));
+  console.log(chalk.magenta('Unique: ') + chalk.magenta(resultadoEstatisticas.linksUnicos));
+}
 
-// const inputs = process.argv
-// console.log(inputs);
-// console.log('Oi, CLI!');
+function printValidateStats(linksValidados) {
+  const resultadoEstatisticas = estatisticas(linksValidados);
+  console.log(chalk.green('Total: ') + chalk.green(resultadoEstatisticas.contarLinks));
+  console.log(chalk.magenta('Unique: ') + chalk.magenta(resultadoEstatisticas.linksUnicos));
+  console.log(chalk.red('Broken: ') + chalk.red(resultadoEstatisticas.linksQuebrados));
+}
+
+function comandosTerminal() {
+  const caminhoArquivo = process.argv[2];
+  mdLinks(caminhoArquivo).then((links) => {
+    if (!comando.stats && !comando.validate) {
+      links.forEach(link => {
+        print(caminhoArquivo, link);
+      });
+    } else {
+      validarLinks(links).then((linksValidados) => {
+        if (comando.validate && !comando.stats) {
+          linksValidados.forEach((link) => {
+            printValidate(caminhoArquivo, link);
+          });
+        }
+        if (comando.stats && !comando.validate) {
+          printStats(linksValidados)
+        }
+        if (comando.validate && comando.stats) {
+          printValidateStats(linksValidados)
+        }
+      });
+    }
+  }).catch((error) => {
+    console.error(chalk.red(error.message));
+  });
+}
+
+comandosTerminal();
