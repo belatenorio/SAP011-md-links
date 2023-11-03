@@ -51,28 +51,28 @@ npm install md-links-isabela-tenorio
 ```
 md-links <caminho-do-arquivo>
 ```
-<p><img src='./src/image/md-links-path.png' alt="md-links"></p>
+<p><img src='./src/image/md-links-path.PNG' alt="md-links"></p>
 
 **Validação dos links:**
 * Para validar links de um arquivo Markdown, execute:
 ```
 md-links <caminho-do-arquivo> --validate
 ```
-<p><img src='./src/image/validate.png' alt="md-links --validate"></p>
+<p><img src='./src/image/validate.PNG' alt="md-links --validate"></p>
 
 **Dados estatísticos dos links:**
 * Para gerar dados estatísticos dos links contidos no arquivo .md, execute:
 ```
 md-links <caminho-do-arquivo> --stats
 ```
-<p><img src='./src/image/stats.png' alt="md-links --stats"></p>
+<p><img src='./src/image/stats.PNG' alt="md-links --stats"></p>
 
 **Validação e estatísticas dos links:** 
 * Para validar links e gerar estatísticas de um arquivo Markdown, execute:
 ```
 md-links <caminho-do-arquivo> --validate --stats
 ```
-<p><img src='./src/image/validate-stats.png' alt="md-links --validate --stats"></p>
+<p><img src='./src/image/validate-stats.PNG' alt="md-links --validate --stats"></p>
 
 
 **Mensagens de erro**
@@ -84,9 +84,9 @@ Dependendo do comando que o usuário executar no terminal, as seguintes mensagen
 
 A partir do comando digitado, o terminal poderá retornar os seguintes erros: 
 
-<img src='./src/image/arquivo-sem-links.png' alt="md-links error messages">
-<img src='./src/image/extensão-nao-md.png' alt="md-links error messages">
-<img src='./src/image/error.png' alt="md-links error messages">
+<img src='./src/image/arquivo-sem-links.PNG' alt="md-links error messages">
+<img src='./src/image/extensão-nao-md.PNG' alt="md-links error messages">
+<img src='./src/image/error.PNG' alt="md-links error messages">
 
 ## 5. Testes Unitários
 
