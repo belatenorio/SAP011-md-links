@@ -3,76 +3,129 @@
 ## Índice
 
 * [1. Prefácio](#1-prefácio)
-* [2. Resumo do projeto](#2-resumo-do-projeto)
-* [3. Objetivos de aprendizagem](#3-objetivos-de-aprendizagem)
-* [4. Considerações gerais](#4-considerações-gerais)
-* [5. Critérios de aceitação mínimos do projeto](#5-criterios-de-aceitação-mínimos-do-projeto)
-* [6. Entregáveis](#6-entregáveis)
-* [7. Hacker edition](#7-hacker-edition)
-* [8. Guias, dicas e leituras complementares](#8-guias-dicas-e-leituras-complementares)
-* [9. Checklist](#9-checklist)
-* [10. Dividindo o problema - babies steps](#10-dividindo-o-problema)
+* [2. Fluxograma](#2-fluxograma)
+* [3. Principais funcionalidades](#3-principais-funcionalidades)
+* [4. Guia de instalação e uso](#4-guia-de-instalação-e-uso)
+* [5. Testes Unitários](#5-testes-unitários)
+* [6. Critérios Mínimos](#6-critérios-mínimos)
+* [7. Tecnologias Utilizadas](#7-tecnologias-utilizadas)
+* [8. Autora](#8-autora)
 
 ***
 
 ## 1. Prefácio
-
-[Markdown](https://pt.widown) é uma linguagem de marcação
+[Markdown](https://pt.wikipedia.org/wiki/Markdown) é uma linguagem de marcação
 muito popular entre os programadores. É usada em muitas plataformas que
 manipulam texto (GitHub, fórum, blogs e etc) e é muito comum encontrar arquivos
-com este formato em qualquer repositório (começando pelo tradicional
-`README.md`).
-
-Os arquivos `Markdown` normalmente contém _links_ que podem estar
+com este formato em qualquer repositório, como por exemplo o README.md.
+Os arquivos Markdown normalmente contém links que podem estar
 quebrados, ou que já não são válidos, prejudicando muito o valor da
-informação que está ali.
+informação que está ali. Por esse motivo, o presente projeto tem como objetivo ser uma biblioteca que extrai os links de um arquivo Markdown e valida-os. 
 
-Uma comunidade open source nos propôs criar uma ferramenta, usando
-[Node.js](https://nodejs.org/palomitalinda), que leia e analise arquivos no formato
-`Markdown`, para verificar os arquivos que contenham links e mostrar algumas
-estatísticas.
+## 2. Fluxograma
 
-![md-links](https://user-images.githubusercontent.com/110297/42118443-b7a5f1f0-7bc8-11e8-96ad-9cc5593715a6.jpg/palomitalinda)
+Como este projeto é testado por meio do terminal, desenvolvi um fluxograma para melhor organizar e direcionar cada marco do processo, proporcionando uma visualização mais clara e facilitando a execução de cada etapa.
 
-## 2. Resumo do projeto
+<img src="./src/image/fluxograma.png" alt="Flowchart" width='700'/>
 
-Neste projeto, será criado uma ferramenta de linha de comando (CLI) assim como
-a sua própria biblioteca (library) em Javascript.
+## 3. Principais funcionalidades
 
-Desta vez, vamos ficar um pouco longe do navegador para construir um programa
-executado com Node.js. Iremos aprender sobre processos
-(`process.env`, `process.argv`, ...),como interagir com sistemas de arquivos,
-como fazer consultas de rede, etc.
+* Leitura e extração de links de um arquivo `Markdown (.md)`;
+* Validação dos links com exibição do `HTTP status code` de cada link utilizando a opção `--validate`;
+* Dados estatísticos dos links contidos no arquivo .md utilizando a opção `--stats`;
+* Combinação de validação (`--validate`) e dados estastíticos dos links (`--stats`) com informações sobre links totais, únicos e quebrados. 
+* Mensagens de erro para os comandos executados incorretamente pelos usuários.
 
-[Node.js](https://nodejs.org/pt-br/) é um ambiente de execução para JavaScript
-construído com o [motor de JavaScript V8 do
-Chrome](https://developers.google.com/v8/). Ele vai nos permitir executar o
-JavaScript no nosso sistema operacional, seja no seu computador ou em um
-servidor, o que nos abre portas para poder interagir com sistemas, arquivos,
-redes e etc.
+## 4. Guia de instalação e uso
 
-Desenvolver sua própria biblioteca é uma experiência fundamental para qualquer
-desenvolvedora, pois te obriga a pensar na interface (API) dos seus _módulos_ e
-como ela será usada por outras desenvolvedoras. Você deve levar em conta as
-peculiaridades da linguagem, convenções e boas práticas.
+### 4.1. Instalação 
+* **Para instalação da biblioteca execute o comando através do terminal:**
+```
+npm install md-links-isabela-tenorio
+```  
 
-## 3. Objetivos de aprendizagem
+### 4.2. Uso
 
-Reflita e depois enumere os objetivos que quer alcançar e aplique no seu projeto. Pense nisso para decidir sua estratégia de trabalho.
+**Extração de links:**
+* Para leitura e extração dos links de um arquivo .md, execute:
+```
+md-links <caminho-do-arquivo>
+```
+<p><img src='./src/image/md-links-path.png' alt="md-links"></p>
 
-### JavaScript
+**Validação dos links:**
+* Para validar links de um arquivo Markdown, execute:
+```
+md-links <caminho-do-arquivo> --validate
+```
+<p><img src='./src/image/validate.png' alt="md-links --validate"></p>
 
-- [ ] **Diferenciar entre tipos de dados primitivos e não primitivos**
+**Dados estatísticos dos links:**
+* Para gerar dados estatísticos dos links contidos no arquivo .md, execute:
+```
+md-links <caminho-do-arquivo> --stats
+```
+<p><img src='./src/image/stats.png' alt="md-links --stats"></p>
 
-- [ ] **Arrays (arranjos)**
+**Validação e estatísticas dos links:** 
+* Para validar links e gerar estatísticas de um arquivo Markdown, execute:
+```
+md-links <caminho-do-arquivo> --validate --stats
+```
+<p><img src='./src/image/validate-stats.png' alt="md-links --validate --stats"></p>
 
-  <details><summary>Links</summary><p>
 
-  * [Arranjos](https://curriculum.laboratoria.la/pt/topics/javascript/04-arrays)
-  * [Array - MDN](https://developer.mozilla.org//pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/)
-  * [Array.prototype.sort() - MDN](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
-  * [Array.prototype.forEach() - MDN](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
-  * [Array.prototype.map() - MDN](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
-  * [Array.prototype.filter() - MDN](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
-  * [Array.prototype.reduce() - MDN](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)
-</p></details>
+**Mensagens de erro**
+
+Dependendo do comando que o usuário executar no terminal, as seguintes mensagens de erro podem ser geradas:
+  * erro para um arquivo .md sem links
+  * erro para a leitura de um arquivo que não é .md
+  * erro para um arquivo inexistente
+
+A partir do comando digitado, o terminal poderá retornar os seguintes erros: 
+
+<img src='./src/image/arquivo-sem-links.png' alt="md-links error messages">
+<img src='./src/image/extensão-nao-md.png' alt="md-links error messages">
+<img src='./src/image/error.png' alt="md-links error messages">
+
+## 5. Testes Unitários
+
+Foram testadas as funções de ``` mdLinks ``` com testes das mensagens de erro, ``` validarLinks ```, ``` estatisticas ```, com a seguinte cobertura:  
+
+<img src='./src/image/teste.PNG' alt="Unitary Tests" width='700'>  
+
+## 6. Critérios Mínimos
+* [x] Poder instalar via `npm install`
+
+* [x] Guia de uso e instalação da biblioteca
+
+* [x] Implementa `options.validate`
+
+* [x] Possuir o executável `md-links` no path (configurado no `package.json`)
+
+* [x] Executar sem erros e ter o resultado esperado
+
+* [x] Implementar `--validate`
+
+* [x] Implementar `--stats`
+
+* [x] Os testes unitários devem cobrir no mínimo 70% dos statements, functions, lines e branches.
+
+* [x] Rodar os testes `npm run test`.
+
+
+## 7. Tecnologias utilizadas
+
+<a href="https://github.com/"><img alt="GitHub Icon" height="45" src="https://cdn.icon-icons.com/icons2/2368/PNG/512/github_logo_icon_143772.png"/></a>
+<a href="https://git-scm.com/"><img alt="Git Bash Icon" height="45" src="https://cdn.icon-icons.com/icons2/2107/PNG/512/file_type_git_icon_130581.png"/></a>
+<a href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/"><img alt="JavaScript Icon" height="40" src="https://cdn.icon-icons.com/icons2/2108/PNG/512/javascript_icon_130900.png"></a>
+<a href="https://nodejs.org/"><img alt="Node.js Icon" height="45" src="https://cdn.icon-icons.com/icons2/2415/PNG/512/nodejs_plain_logo_icon_146409.png"/></a>
+<a href="https://www.npmjs.com/"><img alt="Npm Icon" height="45" src="https://cdn.icon-icons.com/icons2/2407/PNG/512/npm_icon_146141.png"/></a>
+<a href="https://www.figma.com/"><img alt="Figma Icon" height="45" src="https://cdn.icon-icons.com/icons2/2429/PNG/512/figma_logo_icon_147289.png"/></a>
+
+## 8. Desenvolvedora
+<img loading="lazy" src="https://avatars.githubusercontent.com/u/117682146?s=400&u=fb1bd6336cde2b5f4c0fd922206c20e89804b67b&v=4" width=115><br>
+Isabela Tenório
+
+* GitHub: [@isabelatenorio](https://github.com/belatenorio)
+* Linkedin: [Isabela Tenório](https://www.linkedin.com/in/isabelatenorioadv/)

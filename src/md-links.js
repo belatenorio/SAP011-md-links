@@ -3,32 +3,31 @@ const path = require('path');
 
 function mdLinks(caminhoDoArquivo) {
   return new Promise(function (resolve, reject) {
-    if (path.extname(caminhoDoArquivo) === '.md') {
+    if (path.extname(caminhoDoArquivo) !== '.md') {
+      reject({message: 'A extensão do arquivo não é .md'});
+    }
+    else {
       fs.readFile(caminhoDoArquivo, 'utf-8', (err, data) => {
         if (err) {
-          reject(err);
+          reject({message: 'Arquivo não encontrado'});
         }
         else {
-          //verifica os links dentro do arquivo markdow que combinam com o regex
           const linksCombinaComRegex = [...data.matchAll(/\[([^[\]]*?)\]\((https?:\/\/[^\s?#.].[^\s]*)\)/gm)];
           const links = [];
           for (i = 0; i < linksCombinaComRegex.length; i++) {
             const [, texto, href] = linksCombinaComRegex[i]; //utilização de desestruturação
 
-            //armazena os dados separados dentro de um objeto
             const linkSeparado = { texto, href };
             links.push(linkSeparado);
           }
           if (links.length === 0) {
-            reject({ message:'nenhum link encontrado dentro do arquivo' });
+            reject({ message: 'Nenhum link encontrado dentro do arquivo' });
           }
           else {
             resolve(links);
           }
         }
       });
-    } else {
-      reject({ message:'A extensão do arquivo não é .md'});
     }
   });
 };
